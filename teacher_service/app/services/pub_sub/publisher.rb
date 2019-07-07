@@ -11,6 +11,7 @@ module PubSub
 
     def publish
       exchange.publish(message, routing_key: routing_key)
+      connection.close
     end
 
     private

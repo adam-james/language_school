@@ -33,6 +33,7 @@ class TeachersController < ApplicationController
   # PATCH/PUT /teachers/1
   def update
     if @teacher.update(teacher_params)
+      PubSub::TeachersPublisher.publish_updated(@teacher)
       render json: @teacher
     else
       render json: @teacher.errors, status: :unprocessable_entity

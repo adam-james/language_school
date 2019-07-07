@@ -20,6 +20,6 @@ CMD ["bundle", "exec", "rails", "server", "-p", "4000", "--binding", "0.0.0.0"]
 
 FROM base as worker_dev
 
-ENV Workers TeachersWorker
+ENV Workers Teachers::CreatedWorker,Teachers::UpdatedWorker
 
 CMD ["bundle", "exec", "rake", "sneakers:run"]
