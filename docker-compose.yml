@@ -1,0 +1,63 @@
+version: "3.4"
+
+services:
+  teacher_db:
+    image: postgres
+    volumes:
+      - ./tmp/teacher_db:/var/lib/postgresql/data
+
+  course_db:
+    image: postgres
+    volumes:
+      - ./tmp/course_db:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+    volumes:
+      - ./tmp/rabbitmq:/var/lib/rabbitmq
+
+  teacher_service:
+    image: teacher_service
+    build: ./teacher_service
+    tmpfs: /app/tmp/pids
+    volumes:
+      - ./teacher_service:/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - rabbitmq
+      - teacher_db
+    environment:
+      AMQP_HOST: rabbitmq
+
+  course_service:
+    image: course_service
+    build:
+      context: ./course_service
+      target: web_dev
+    tmpfs: /app/tmp/pids
+    volumes:
+      - ./course_service:/app
+    ports:
+      - 4000:4000
+    depends_on:
+      - rabbitmq
+      - course_db
+    environment:
+      AMQP_HOST: rabbitmq
+
+  course_worker:
+    image: course_worker
+    build:
+      context: ./course_service
+      target: worker_dev
+    volumes:
+      - ./course_service:/app
+    depends_on:
+      - rabbitmq
+      - course_db
+    environment:
+      AMQP_HOST: rabbitmq
