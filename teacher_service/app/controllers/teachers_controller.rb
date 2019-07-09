@@ -2,10 +2,10 @@ class TeachersController < ApplicationController
   before_action :set_teacher, only: [:show, :update, :destroy]
 
   # TODO 
-  #   - publish updates to teachers
-  #   - why is course_worker timing out rabbit connections
-  #   - what to do with deletes
-
+  #   - remove deletes
+  #   - install rspec and test
+  #   - why is course_worker timing out? error_class=ActiveRecord::ConnectionTimeoutError
+  
   # GET /teachers
   def index
     @teachers = Teacher.all

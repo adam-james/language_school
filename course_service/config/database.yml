@@ -78,6 +78,7 @@ test:
 #
 production:
   <<: *default
-  database: course_service_production
-  username: course_service
-  password: <%= ENV['COURSE_SERVICE_DATABASE_PASSWORD'] %>
+  host: <%= ENV['DB_HOST'] %>
+  database: <%= ENV['DB_DATABASE'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>

@@ -1,3 +1,3 @@
 require 'sneakers'
 
-Sneakers.configure :amqp => 'amqp://rabbitmq'
+Sneakers.configure :amqp => ENV.fetch('AMQP_URL', 'amqp://rabbitmq')
