@@ -15,3 +15,5 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
 CMD ["bundle", "exec", "rails", "server", "--binding", "0.0.0.0"]
+
+# TODO production target

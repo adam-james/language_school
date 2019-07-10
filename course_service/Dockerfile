@@ -23,3 +23,5 @@ FROM base as worker_dev
 ENV Workers Teachers::CreatedWorker,Teachers::UpdatedWorker
 
 CMD ["bundle", "exec", "rake", "sneakers:run"]
+
+# TODO production target

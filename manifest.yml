@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: teacher-service
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -75,7 +75,7 @@ kind: Deployment
 metadata:
   name: course-service
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -147,7 +147,7 @@ kind: Deployment
 metadata:
   name: course-worker
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     rollingUpdate:
       maxSurge: 1
