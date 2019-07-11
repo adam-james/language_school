@@ -18,9 +18,7 @@ module PubSub
 
     attr_reader :message, :routing_key
 
-    CONFIG = {
-      host: ENV['AMQP_HOST']
-    }
+    CONFIG = ENV.fetch('AMQP_URL', { host: ENV['AMQP_HOST'] })
 
     def connection
       @connection ||= Bunny.new(CONFIG).tap do |conn|

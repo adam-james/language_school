@@ -1,0 +1,201 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: teacher-service
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: teacher-service
+    spec:
+      containers:
+        - name: teacher-service
+          image: languageschoolregistry.azurecr.io/teacher_service:latest
+          resources:
+            requests:
+              cpu: 250m
+            limits:
+              cpu: 500m
+          env:
+            - name: RAILS_ENV
+              value: production
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: secret-key-base
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: teacher-db-database
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: teacher-db-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: teacher-db-password
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: teacher-db-host
+            - name: AMQP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: amqp-url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: teacher-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      protocol: TCP
+      name: http
+      targetPort: 3000
+  selector:
+    app: teacher-service
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: course-service
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: course-service
+    spec:
+      containers:
+        - name: course-service
+          image: languageschoolregistry.azurecr.io/course_service:latest
+          resources:
+            requests:
+              cpu: 250m
+            limits:
+              cpu: 500m
+          env:
+            - name: RAILS_ENV
+              value: production
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: secret-key-base
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: course-db-database
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: course-db-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: course-db-password
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: course-db-host
+            - name: AMQP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: amqp-url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: course-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      protocol: TCP
+      name: http
+      targetPort: 4000
+  selector:
+    app: course-service
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: course-worker
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: course-worker
+    spec:
+      containers:
+        - name: course-worker
+          image: languageschoolregistry.azurecr.io/course_worker:latest
+          resources:
+            requests:
+              cpu: 250m
+            limits:
+              cpu: 500m
+          env:
+            - name: RAILS_ENV
+              value: production
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: secret-key-base
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: course-db-database
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: course-db-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: course-db-password
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: course-db-host
+            - name: AMQP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: language-school-secrets
+                  key: amqp-url

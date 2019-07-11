@@ -78,6 +78,7 @@ test:
 #
 production:
   <<: *default
-  database: teacher_service_production
-  username: teacher_service
-  password: <%= ENV['TEACHER_SERVICE_DATABASE_PASSWORD'] %>
+  host: <%= ENV['DB_HOST'] %>
+  database: <%= ENV['DB_DATABASE'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
