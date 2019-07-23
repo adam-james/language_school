@@ -2,8 +2,6 @@
 
 source ./bin/env.sh
 
-# TODO use $LOCATION. This is creating resources in westus.
-
 echo Creating service principal...
 principal=($(az ad sp create-for-rbac --skip-assignment \
   --query [appId,password] --output tsv))
@@ -23,6 +21,7 @@ sleep 5
 echo Creating Kubernetes cluster...
 az aks create \
     --resource-group $GROUP \
+    --location $LOCATION \
     --name $CLUSTER \
     --node-count 1 \
     --service-principal $appId \
