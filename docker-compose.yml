@@ -61,3 +61,4 @@ services:
       - course_db
     environment:
       AMQP_HOST: rabbitmq
+      RAILS_MAX_THREADS: 10
