@@ -14,6 +14,7 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
 FROM base as web_dev
+
 EXPOSE 4000
 
 CMD ["bundle", "exec", "rails", "server", "-p", "4000", "--binding", "0.0.0.0"]
@@ -24,4 +25,22 @@ ENV Workers Teachers::CreatedWorker,Teachers::UpdatedWorker
 
 CMD ["bundle", "exec", "rake", "sneakers:run"]
 
-# TODO production target
+FROM base as worker_prod
+
+ENV Workers Teachers::CreatedWorker,Teachers::UpdatedWorker
+ENV RAILS_ENV production
+ENV RAILS_LOG_TO_STDOUT true
+
+CMD ["bundle", "exec", "rake", "sneakers:run"]
+
+FROM base as web_prod
+
+EXPOSE 4000
+
+ENV RAILS_ENV production
+ENV RAILS_LOG_TO_STDOUT true
+
+CMD ["bundle", "exec", "rails", "server", "-p", "4000", "--binding", "0.0.0.0"]
+
+# TODO 
+# Collect logs in Papertrail

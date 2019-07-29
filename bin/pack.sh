@@ -8,9 +8,9 @@ az acr login --name $REGISTRY
 echo Building images...
 echo WARNING: Using development builds.
 # TODO use production builds
-docker build -t teacher_service ./teacher_service/
-docker build -t course_service --target web_dev ./course_service/
-docker build -t course_worker --target worker_dev ./course_service/
+docker build -t teacher_service --target web_prod ./teacher_service/
+docker build -t course_service --target web_prod ./course_service/
+docker build -t course_worker --target worker_prod ./course_service/
 
 echo Fetching login server info...
 loginServer=$(az acr list --resource-group $GROUP --query "[].{acrLoginServer:loginServer}" --output tsv)

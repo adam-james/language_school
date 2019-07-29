@@ -1,4 +1,4 @@
-FROM ruby:2.6.3
+FROM ruby:2.6.3 as base
 
 RUN apt-get update -qq && apt-get install -y postgresql-client apt-transport-https
 
@@ -14,6 +14,13 @@ COPY . /app
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
+FROM base as web_dev
+
 CMD ["bundle", "exec", "rails", "server", "--binding", "0.0.0.0"]
 
-# TODO production target
+FROM base as web_prod
+
+ENV RAILS_ENV production
+ENV RAILS_LOG_TO_STDOUT true
+
+CMD ["bundle", "exec", "rails", "server", "--binding", "0.0.0.0"]

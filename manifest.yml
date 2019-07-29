@@ -16,15 +16,13 @@ spec:
     spec:
       containers:
         - name: teacher-service
-          image: languageschoolregistry2.azurecr.io/teacher_service:latest
+          image: languageschoolregistry.azurecr.io/teacher_service:latest
           resources:
             requests:
               cpu: 250m
             limits:
               cpu: 500m
           env:
-            - name: RAILS_ENV
-              value: production
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:
@@ -88,15 +86,13 @@ spec:
     spec:
       containers:
         - name: course-service
-          image: languageschoolregistry2.azurecr.io/course_service:latest
+          image: languageschoolregistry.azurecr.io/course_service:latest
           resources:
             requests:
               cpu: 250m
             limits:
               cpu: 500m
           env:
-            - name: RAILS_ENV
-              value: production
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:
@@ -160,15 +156,13 @@ spec:
     spec:
       containers:
         - name: course-worker
-          image: languageschoolregistry2.azurecr.io/course_worker:latest
+          image: languageschoolregistry.azurecr.io/course_worker:latest
           resources:
             requests:
               cpu: 250m
             limits:
               cpu: 500m
           env:
-            - name: RAILS_ENV
-              value: production
             - name: RAILS_MAX_THREADS
               value: "10"
             - name: SECRET_KEY_BASE

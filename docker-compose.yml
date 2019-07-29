@@ -21,7 +21,9 @@ services:
 
   teacher_service:
     image: teacher_service
-    build: ./teacher_service
+    build:
+      context: ./teacher_service
+      target: web_dev
     tmpfs: /app/tmp/pids
     volumes:
       - ./teacher_service:/app
